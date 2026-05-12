@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --shadow-highlight: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+  --breakpoint-narrow: (max-aspect-ratio: 3 / 2);
+  --breakpoint-wide: (min-aspect-ratio: 3 / 2);
+  --breakpoint-taller-than-854: (min-height: 854px);
+}
+
+@layer base {
+  @supports (font: -apple-system-body) and (-webkit-appearance: none) {
+    img[loading="lazy"] {
+      clip-path: inset(0.6px);
+    }
+  }
+}

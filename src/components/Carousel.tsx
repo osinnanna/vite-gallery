@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
+import Image from "./Image";
+import { useNavigate } from "react-router-dom";
 import useKeypress from "react-use-keypress";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
@@ -12,12 +12,12 @@ export default function Carousel({
   index: number;
   currentPhoto: ImageProps;
 }) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [, setLastViewedPhoto] = useLastViewedPhoto();
 
   function closeModal() {
     setLastViewedPhoto(currentPhoto.id);
-    router.push("/", undefined, { shallow: true });
+    navigate("/");
   }
 
   function changePhotoId(newVal: number) {
@@ -38,7 +38,6 @@ export default function Carousel({
           src={currentPhoto.blurDataUrl}
           className="pointer-events-none h-full w-full"
           alt="blurred background"
-          fill
           priority={true}
         />
       </button>

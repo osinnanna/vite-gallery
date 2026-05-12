@@ -1,57 +1,52 @@
 import { Dialog } from "@headlessui/react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
 import useKeypress from "react-use-keypress";
 import type { ImageProps } from "../utils/types";
 import SharedModal from "./SharedModal";
+import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
 
 export default function Modal({
   images,
-  onClose,
 }: {
   images: ImageProps[];
-  onClose?: () => void;
 }) {
   let overlayRef = useRef();
-  const router = useRouter();
-
-  const { photoId } = router.query;
+  const navigate = useNavigate();
+  const { photoId } = useParams();
+  const [, setLastViewedPhoto] = useLastViewedPhoto();
+  
   let index = Number(photoId);
 
   const [direction, setDirection] = useState(0);
   const [curIndex, setCurIndex] = useState(index);
 
   function handleClose() {
-    router.push("/", undefined, { shallow: true });
-    onClose();
+    setLastViewedPhoto(curIndex);
+    navigate("/");
   }
 
   function changePhotoId(newVal: number) {
-    if (newVal > index) {
+    if (newVal > curIndex) {
       setDirection(1);
     } else {
       setDirection(-1);
     }
     setCurIndex(newVal);
-    router.push(
-      {
-        query: { photoId: newVal },
-      },
-      `/p/${newVal}`,
-      { shallow: true },
-    );
+    // Use { replace: true } so back button goes to Gallery, not previous Modal image
+    navigate(`/p/${newVal}`, { replace: true, state: { backgroundLocation: { pathname: "/" } } });
   }
 
   useKeypress("ArrowRight", () => {
-    if (index + 1 < images.length) {
-      changePhotoId(index + 1);
+    if (curIndex + 1 < images.length) {
+      changePhotoId(curIndex + 1);
     }
   });
 
   useKeypress("ArrowLeft", () => {
-    if (index > 0) {
-      changePhotoId(index - 1);
+    if (curIndex > 0) {
+      changePhotoId(curIndex - 1);
     }
   });
 
