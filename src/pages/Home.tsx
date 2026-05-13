@@ -77,6 +77,16 @@ const Home = () => {
         >
           {content.footerCredit}
         </a>
+        <span>, </span>
+        <a
+          href={content.originalProjectLinkDemo}
+          target="_blank"
+          className="font-semibold hover:text-white"
+          rel="noopener noreferrer"
+        >
+          {content.demoLinkText}
+        </a>
+        <span>, {content.imageCredit}</span>
       </footer>
     </>
   );

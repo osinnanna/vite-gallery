@@ -1,4 +1,4 @@
-# 🛡 Admin & Image Management Guide
+# Admin & Image Management Guide
 
 This project includes a dual-interface system for managing your gallery images. Both tools automatically convert your images to **WebP** format to ensure the gallery stays fast.
 
@@ -62,17 +62,17 @@ For the Web Interface to have permission to upload files, you must run this SQL 
 CREATE POLICY "Allow admin uploads"
 ON storage.objects FOR INSERT
 TO authenticated
-WITH CHECK (bucket_id = 'images');
+WITH CHECK (bucket_id = 'images'); -- Or name of choice
 
 -- 2. Allow authenticated users to overwrite existing files (upsert)
 CREATE POLICY "Allow admin updates"
 ON storage.objects FOR UPDATE
 TO authenticated
-USING (bucket_id = 'images');
+USING (bucket_id = 'images'); -- Or name of choice
 ```
 
 ---
 
-## 🛠 Troubleshooting
+## Troubleshooting
 - **Zero images in gallery:** Ensure your `images` bucket is set to **Public** in Supabase.
 - **CLI login fails:** Ensure your `ADMIN_EMAIL` and `ADMIN_PASSWORD` match what you provided in the `.env`.
