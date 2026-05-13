@@ -50,90 +50,17 @@ export default function SharedModal({
   return (
     <MotionConfig
       transition={{
-        x: { type: "spring", stiffness: 400, damping: 40 },
-        opacity: { duration: 0.15 },
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 },
       }}
     >
       <div
-        className="relative z-50 flex h-full w-full max-w-7xl flex-col items-center justify-center"
+        className="relative z-50 flex aspect-[3/2] w-full max-w-7xl items-center wide:h-full xl:taller-than-854:h-auto"
         {...handlers}
       >
-        {/* Main image area */}
-        <div className="relative flex w-full flex-1 items-center justify-center">
-          {/* Navigation and Actions - Positioned at the edges of the 7xl container */}
-          <div className="absolute inset-0 z-50 pointer-events-none">
-            {loaded && (
-              <div className="relative h-full w-full">
-                {navigation && (
-                  <>
-                    {index > 0 && (
-                      <button
-                        className="pointer-events-auto absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
-                        onClick={() => changePhotoId(index - 1)}
-                      >
-                        <ChevronLeftIcon className="h-6 w-6" />
-                      </button>
-                    )}
-                    {images && index + 1 < images.length && (
-                      <button
-                        className="pointer-events-auto absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
-                        onClick={() => changePhotoId(index + 1)}
-                      >
-                        <ChevronRightIcon className="h-6 w-6" />
-                      </button>
-                    )}
-                  </>
-                )}
-                <div className="pointer-events-auto absolute top-4 right-4 flex items-center gap-3 text-white">
-                  {navigation ? (
-                    <a
-                      href={currentImage.url}
-                      className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                      target="_blank"
-                      title="Open fullsize version"
-                      rel="noreferrer"
-                    >
-                      <ArrowTopRightOnSquareIcon className="h-5 w-5" />
-                    </a>
-                  ) : (
-                    <a
-                      href={`https://twitter.com/intent/tweet?text=Check%20out%20this%20pic%20from%20Next.js%20Conf!%0A%0Ahttps://nextjsconf-pics.vercel.app/p/${index}`}
-                      className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                      target="_blank"
-                      title="Open fullsize version"
-                      rel="noreferrer"
-                    >
-                      <Twitter className="h-5 w-5" />
-                    </a>
-                  )}
-                  <button
-                    onClick={() =>
-                      downloadPhoto(currentImage.url, `${index}.jpg`)
-                    }
-                    className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                    title="Download fullsize version"
-                  >
-                    <ArrowDownTrayIcon className="h-5 w-5" />
-                  </button>
-                </div>
-                <div className="pointer-events-auto absolute top-4 left-4 flex items-center gap-3 text-white">
-                  <button
-                    onClick={() => closeModal()}
-                    className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                  >
-                    {navigation ? (
-                      <XMarkIcon className="h-5 w-5" />
-                    ) : (
-                      <ArrowUturnLeftIcon className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Image */}
-          <div className="flex h-[75vh] w-full items-center justify-center overflow-hidden">
+        {/* Main image */}
+        <div className="w-full overflow-hidden">
+          <div className="relative flex aspect-[3/2] items-center justify-center">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={index}
@@ -142,62 +69,143 @@ export default function SharedModal({
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="absolute flex h-full w-full items-center justify-center"
+                className="absolute"
               >
                 <Image
                   src={currentImage.url}
                   width={currentImage.width}
                   height={currentImage.height}
-                  alt={currentImage.name || "Gallery image"}
+                  priority
+                  alt="Gallery image"
                   onLoad={() => setLoaded(true)}
                   objectFit="contain"
-                  className="max-h-full w-auto"
                 />
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
 
-        {/* Spacer for bottom nav */}
-        <div className="h-28 w-full" />
-
-        {/* Bottom Nav bar */}
-        {navigation && images && (
-          <div className="fixed inset-x-0 bottom-0 z-40 overflow-hidden bg-gradient-to-b from-black/0 to-black/60">
-            <div className="mx-auto mt-6 mb-6 flex h-14 justify-center">
-              <div className="flex gap-2">
+        {/* Buttons + bottom nav bar */}
+        <div className="absolute inset-0 mx-auto flex max-w-7xl items-center justify-center">
+          {/* Buttons */}
+          {loaded && (
+            <div className="relative aspect-[3/2] max-h-full w-full">
+              {navigation && (
+                <>
+                  {index > 0 && (
+                    <button
+                      className="absolute left-3 top-[calc(50%-16px)] rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
+                      style={{ transform: "translate3d(0, 0, 0)" }}
+                      onClick={() => changePhotoId(index - 1)}
+                    >
+                      <ChevronLeftIcon className="h-6 w-6" />
+                    </button>
+                  )}
+                  {images && index + 1 < images.length && (
+                    <button
+                      className="absolute right-3 top-[calc(50%-16px)] rounded-full bg-black/50 p-3 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white focus:outline-none"
+                      style={{ transform: "translate3d(0, 0, 0)" }}
+                      onClick={() => changePhotoId(index + 1)}
+                    >
+                      <ChevronRightIcon className="h-6 w-6" />
+                    </button>
+                  )}
+                </>
+              )}
+              <div className="absolute top-0 right-0 flex items-center gap-2 p-3 text-white">
+                {navigation ? (
+                  <a
+                    href={currentImage.url}
+                    className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
+                    target="_blank"
+                    title="Open fullsize version"
+                    rel="noreferrer"
+                  >
+                    <ArrowTopRightOnSquareIcon className="h-5 w-5" />
+                  </a>
+                ) : (
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=Check%20out%20this%20pic%20from%20Next.js%20Conf!%0A%0Ahttps://nextjsconf-pics.vercel.app/p/${index}`}
+                    className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
+                    target="_blank"
+                    title="Open fullsize version"
+                    rel="noreferrer"
+                  >
+                    <Twitter className="h-5 w-5" />
+                  </a>
+                )}
+                <button
+                  onClick={() =>
+                    downloadPhoto(currentImage.url, `${index}.jpg`)
+                  }
+                  className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
+                  title="Download fullsize version"
+                >
+                  <ArrowDownTrayIcon className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="absolute top-0 left-0 flex items-center gap-2 p-3 text-white">
+                <button
+                  onClick={() => closeModal()}
+                  className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
+                >
+                  {navigation ? (
+                    <XMarkIcon className="h-5 w-5" />
+                  ) : (
+                    <ArrowUturnLeftIcon className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
+          {/* Bottom Nav bar */}
+          {navigation && images && (
+            <div className="fixed inset-x-0 bottom-0 z-40 overflow-hidden bg-gradient-to-b from-black/0 to-black/60">
+              <motion.div
+                initial={false}
+                className="mx-auto mt-6 mb-6 flex h-14 w-[84px]"
+              >
                 <AnimatePresence initial={false}>
                   {filteredImages.map(({ url, id }) => (
                     <motion.button
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{
-                        opacity: 1,
-                        scale: id === index ? 1.2 : 1,
-                        zIndex: id === index ? 20 : 10,
+                      initial={{
+                        width: "0%",
+                        x: `${Math.max((index - 1) * -100, 15 * -100)}%`,
                       }}
-                      exit={{ opacity: 0, scale: 0.8 }}
+                      animate={{
+                        scale: id === index ? 1.25 : 1,
+                        width: "100%",
+                        x: `${Math.max(index * -100, 15 * -100)}%`,
+                      }}
+                      exit={{ width: "0%" }}
                       onClick={() => changePhotoId(id)}
                       key={id}
                       className={`${
                         id === index
-                          ? "rounded-md shadow-lg shadow-black/50 ring-2 ring-white/50"
-                          : "rounded-sm brightness-50 contrast-125 hover:brightness-75"
-                      } relative h-full w-20 shrink-0 transform-gpu overflow-hidden transition focus:outline-none`}
+                          ? "z-20 rounded-md shadow shadow-black/50"
+                          : "z-10"
+                      } ${id === 0 ? "rounded-l-md" : ""} ${
+                        id === images.length - 1 ? "rounded-r-md" : ""
+                      } relative inline-block w-full shrink-0 transform-gpu overflow-hidden focus:outline-none`}
                     >
                       <Image
                         alt="small photos on the bottom"
                         width={180}
                         height={120}
-                        className="h-full w-full object-cover"
+                        className={`${
+                          id === index
+                            ? "brightness-110 hover:brightness-110"
+                            : "brightness-50 contrast-125 hover:brightness-75"
+                        } h-full transform object-cover transition`}
                         src={url}
                       />
                     </motion.button>
                   ))}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </MotionConfig>
   );

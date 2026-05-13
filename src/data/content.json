@@ -4,7 +4,8 @@
   "description": "A high-performance image gallery powered by Bun, Vite, and Supabase Storage. Optimized for speed and beautiful transitions.",
   "heroTitle": "Photography Collection",
   "heroDescription": "Exploring moments through a lens. All images are optimized and served with care.",
-  "footerCredit": "Inspired by the Next.js Vercel Blob template, Images from Unsplash",
-  "footerLink": "https://vercel.com/templates",
+  "footerCredit": "Inspired by the Next.js Vercel Blob template, Images from Unsplash and Google Search",
+  "footerLink": "https://vercel.com/templates/next.js/image-gallery-starter",
+  "originalProjectLinkDemo": "https://nextjsconf-pics.vercel.app",
   "sourceCodeLink": "https://github.com/osinnanna/vite-gallery"
 }

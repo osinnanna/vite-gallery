@@ -4,6 +4,7 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   blurDataURL?: string;
   placeholder?: "blur" | "empty";
   objectFit?: "cover" | "contain";
+  priority?: boolean;
 }
 
 /**
@@ -12,7 +13,7 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
  * Replicates 'next/image' behavior in a standard React environment:
  * - Supports 'blur-up' loading using a low-res base64 placeholder.
  * - Maintains aspect ratio to prevent layout shifts.
- * - Uses native lazy loading.
+ * - Uses native lazy loading (unless priority is set).
  */
 const Image = ({
   src,
@@ -25,6 +26,7 @@ const Image = ({
   style,
   onLoad,
   objectFit = "cover",
+  priority = false,
   ...props
 }: ImageProps) => {
   const [loaded, setLoaded] = useState(false);
@@ -58,7 +60,7 @@ const Image = ({
         width={width}
         height={height}
         onLoad={handleLoad}
-        loading="lazy"
+        loading={priority ? "eager" : "lazy"}
         className={`transition-opacity duration-500 ${
           loaded ? "opacity-100" : "opacity-0"
         } ${isBlur ? "absolute inset-0" : ""} w-full h-full ${
