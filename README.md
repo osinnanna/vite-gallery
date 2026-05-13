@@ -1,4 +1,4 @@
-# Vite + Supabase Image Gallery
+# Vite Image Gallery Template
 
 A high-performance image gallery ported from Next.js to a Vite-based Single Page Application (SPA), powered by **Bun** and **Supabase Storage**.
 
